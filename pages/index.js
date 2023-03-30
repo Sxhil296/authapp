@@ -1,4 +1,5 @@
-import { useSession } from "next-auth/react";
+import { getSession, signOut, useSession } from "next-auth/react";
+import { redirect } from "next/dist/server/api-utils";
 import Head from "next/head";
 import Image from "next/image";
 import Link from "next/link";
@@ -47,7 +48,10 @@ function User({ session }) {
         <h5>{session.user.email}</h5>
       </div>
       <div className="flex justify-center">
-        <button className="mt-5 px-10 py-1 rounded-sm bg-indigo-500 text-white font-bold">
+        <button
+          className="mt-5 px-10 py-1 rounded-sm bg-gray-50 text-gray-800 font-bold border"
+          onClick={signOut}
+        >
           Sign Out
         </button>
       </div>
@@ -62,4 +66,20 @@ function User({ session }) {
       </div>
     </main>
   );
+}
+
+export async function getServerSideProps({ req }) {
+  const session = await getSession({ req });
+  if (!session) { 
+    return {
+      redirect: {
+        destination: "/login",
+        permanent: false,
+      },
+    };
+  }
+
+  return {
+    props: { session },
+  };
 }
