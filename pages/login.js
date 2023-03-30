@@ -6,8 +6,23 @@ import Layout from "../src/Layout";
 import styles from "../styles/Form.module.css";
 import { HiAtSymbol, HiFingerPrint } from "react-icons/hi";
 import { signIn, signOut } from "next-auth/react";
+import { useFormik } from "formik";
 
 const login = () => {
+  const formik = useFormik({
+    initialValues: {
+      email: "",
+      password: "",
+    },
+    onSubmit,
+    // onSubmit: (values) => {
+    //   alert(JSON.stringify(values, null, 2));
+    // },
+  });
+  async function onSubmit(values) {
+    console.log(values);
+  }
+
   const [show, setShow] = useState(false);
 
   //handle google sign in
@@ -17,7 +32,7 @@ const login = () => {
 
   //handle github sign in
   async function handleGithubSignIn() {
-    signIn("github", { callbackUrl: "http://localhost:3000" } )
+    signIn("github", { callbackUrl: "http://localhost:3000" });
   }
 
   return (
@@ -33,14 +48,16 @@ const login = () => {
             quis!{" "}
           </p>
         </div>
-        <form className="flex flex-col gap-5">
+        <form className="flex flex-col gap-5" onSubmit={formik.handleSubmit}>
           <div className={styles.input_group}>
             <input
               type="email"
               name="email"
-              id=""
               placeholder="Email"
               className={styles.input_text}
+              // onChange={formik.handleChange}
+              // value={formik.values.email}
+              {...formik.getFieldProps('email')}
             />
             <span className="icon flex items-center px-4">
               <HiAtSymbol size={25} />
@@ -49,11 +66,12 @@ const login = () => {
           <div className={styles.input_group}>
             <input
               type={`${show ? "text" : "password"}`}
-              // type="password"
               name="password"
-              id=""
               placeholder="Password"
               className={styles.input_text}
+              // onChange={formik.handleChange}
+              // value={formik.values.password}
+              {...formik.getFieldProps('password')}
             />
             <span
               className="icon flex items-center px-4 cursor-pointer hover:text-[#6366f1]"
