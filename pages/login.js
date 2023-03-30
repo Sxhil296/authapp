@@ -7,6 +7,7 @@ import styles from "../styles/Form.module.css";
 import { HiAtSymbol, HiFingerPrint } from "react-icons/hi";
 import { signIn, signOut } from "next-auth/react";
 import { useFormik } from "formik";
+import validate from "../lib/validate";
 
 const login = () => {
   const formik = useFormik({
@@ -14,11 +15,13 @@ const login = () => {
       email: "",
       password: "",
     },
+    validate: validate,
     onSubmit,
     // onSubmit: (values) => {
     //   alert(JSON.stringify(values, null, 2));
     // },
   });
+
   async function onSubmit(values) {
     console.log(values);
   }
@@ -57,12 +60,17 @@ const login = () => {
               className={styles.input_text}
               // onChange={formik.handleChange}
               // value={formik.values.email}
-              {...formik.getFieldProps('email')}
+              {...formik.getFieldProps("email")}
             />
             <span className="icon flex items-center px-4">
               <HiAtSymbol size={25} />
             </span>
           </div>
+          {formik.errors.email ? (
+            <span className="text-rose-500">{formik.errors.email}</span>
+          ) : (
+            <></>
+          )}
           <div className={styles.input_group}>
             <input
               type={`${show ? "text" : "password"}`}
@@ -71,7 +79,7 @@ const login = () => {
               className={styles.input_text}
               // onChange={formik.handleChange}
               // value={formik.values.password}
-              {...formik.getFieldProps('password')}
+              {...formik.getFieldProps("password")}
             />
             <span
               className="icon flex items-center px-4 cursor-pointer hover:text-[#6366f1]"
@@ -80,6 +88,13 @@ const login = () => {
               <HiFingerPrint size={25} />
             </span>
           </div>
+          {formik.errors.password ? 
+              <span className="text-rose-500">{formik.errors.password}</span>
+             : 
+              <></>
+            }
+
+            
           {/* log in buttons */}
           <div className={styles.button}>
             <button type="submit">Login</button>
