@@ -66,7 +66,7 @@ const login = () => {
               <HiAtSymbol size={25} />
             </span>
           </div>
-          {formik.errors.email ? (
+          {formik.errors.email && formik.touched.email ? (
             <span className="text-rose-500">{formik.errors.email}</span>
           ) : (
             <></>
@@ -88,13 +88,12 @@ const login = () => {
               <HiFingerPrint size={25} />
             </span>
           </div>
-          {formik.errors.password ? 
-              <span className="text-rose-500">{formik.errors.password}</span>
-             : 
-              <></>
-            }
+          {formik.errors.password && formik.touched.password ? (
+            <span className="text-rose-500">{formik.errors.password}</span>
+          ) : (
+            <></>
+          )}
 
-            
           {/* log in buttons */}
           <div className={styles.button}>
             <button type="submit">Login</button>
@@ -107,6 +106,7 @@ const login = () => {
                 height={20}
                 width={20}
                 className="inline-block ml-2"
+                alt='google svg'
               />
             </button>
           </div>
@@ -118,6 +118,7 @@ const login = () => {
                 height={20}
                 width={20}
                 className="inline-block ml-2"
+                alt='github svg'
               />
             </button>
           </div>

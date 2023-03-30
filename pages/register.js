@@ -6,6 +6,7 @@ import { HiAtSymbol, HiFingerPrint, HiOutlineUser } from "react-icons/hi";
 import Image from "next/image";
 import Link from "next/link";
 import { useFormik } from "formik";
+import { registerValidate } from "../lib/validate";
 
 const register = () => {
   const formik = useFormik({
@@ -13,17 +14,17 @@ const register = () => {
       username: "",
       email: "",
       password: "",
-      cpassword: ""
+      cpassword: "",
     },
-    
-    onSubmit
+    validate: registerValidate,
+    onSubmit,
     // onSubmit: (values) => {
     //   alert(JSON.stringify(values, null, 2));
     // },
   });
 
-  async function onSubmit(values){
-    console.log(values)
+  async function onSubmit(values) {
+    console.log(values);
   }
 
   const [show, setShow] = useState({ password: false, cpassword: false });
@@ -47,24 +48,35 @@ const register = () => {
               name="username"
               placeholder="Username"
               className={styles.input_text}
-              {...formik.getFieldProps('username')}
+              {...formik.getFieldProps("username")}
             />
             <span className="icon flex items-center px-4">
               <HiOutlineUser size={25} />
             </span>
           </div>
+          {formik.errors.username && formik.touched.username ? (
+            <span className="text-rose-500">{formik.errors.username}</span>
+          ) : (
+            <></>
+          )}
+
           <div className={styles.input_group}>
             <input
               type="email"
               name="email"
               placeholder="Email"
               className={styles.input_text}
-              {...formik.getFieldProps('email')}
+              {...formik.getFieldProps("email")}
             />
             <span className="icon flex items-center px-4">
               <HiAtSymbol size={25} />
             </span>
           </div>
+          {formik.errors.email && formik.touched.email ? (
+            <span className="text-rose-500">{formik.errors.email}</span>
+          ) : (
+            <></>
+          )}
           <div className={styles.input_group}>
             <input
               type={`${show.password ? "text" : "password"}`}
@@ -72,7 +84,7 @@ const register = () => {
               id=""
               placeholder="Password"
               className={styles.input_text}
-              {...formik.getFieldProps('password')}
+              {...formik.getFieldProps("password")}
             />
             <span
               className="icon flex items-center px-4 cursor-pointer hover:text-[#6366f1]"
@@ -81,14 +93,18 @@ const register = () => {
               <HiFingerPrint size={25} />
             </span>
           </div>
+          {formik.errors.password && formik.touched.password ? (
+            <span className="text-rose-500">{formik.errors.password}</span>
+          ) : (
+            <></>
+          )}
           <div className={styles.input_group}>
             <input
               type={`${show.cpassword ? "text" : "password"}`}
               name="cpassword"
               placeholder="Confirm Password"
               className={styles.input_text}
-              {...formik.getFieldProps('cpassword')}
-
+              {...formik.getFieldProps("cpassword")}
             />
             <span
               className="icon flex items-center px-4 cursor-pointer hover:text-[#6366f1]"
@@ -97,6 +113,11 @@ const register = () => {
               <HiFingerPrint size={25} />
             </span>
           </div>
+          {formik.errors.cpassword && formik.touched.cpassword ? (
+            <span className="text-rose-500">{formik.errors.cpassword}</span>
+          ) : (
+            <></>
+          )}
           <div className={styles.button}>
             <button type="submit">Sign Up</button>
           </div>
